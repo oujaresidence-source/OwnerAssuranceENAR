@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ouja Residence — Guest Damage Report | تقرير أضرار الضيف</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--green:#1A7A5B;--dark:#2C3E50;--light-bg:#f0f7f4;--border:#e0e0e0;--gray:#6b7280}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:linear-gradient(145deg,#f8faf9 0%,#eef4f1 50%,#f5f3f0 100%);min-height:100vh;color:var(--dark)}
+.header{background:#fff;border-bottom:3px solid var(--green);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,.04);position:sticky;top:0;z-index:10}
+.header h1{font-size:18px;font-weight:800;color:var(--green);letter-spacing:1.5px}
+.header .sub{font-size:11px;color:#999;letter-spacing:.5px}
+.header .ar{color:#999;font-size:14px}
+.lang-bar{display:flex;justify-content:center;gap:8px;padding:16px 16px 0}
+.lang-btn{padding:8px 20px;border-radius:20px;border:1.5px solid var(--border);background:#fff;color:var(--gray);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s}
+.lang-btn.active{border:2px solid var(--green);background:var(--light-bg);color:var(--green);font-weight:700}
+.wrap{max-width:700px;margin:0 auto;padding:8px 16px 120px}
+.progress{display:flex;gap:4px;margin-bottom:24px;margin-top:16px}
+.progress .bar{flex:1;height:4px;border-radius:2px;background:var(--border);cursor:pointer;transition:background .3s}
+.progress .bar.active{background:var(--green)}
+.sec-title{margin-bottom:24px}
+.sec-title .badge{font-size:11px;font-weight:700;color:var(--green);background:var(--light-bg);padding:4px 10px;border-radius:12px;display:inline-block;margin-right:10px}
+.sec-title h2{font-size:20px;font-weight:700;color:var(--dark);display:inline}
+.sec-title .subtitle{font-size:13px;color:#999;margin-top:4px;margin-left:60px}
+.card{background:#fff;border-radius:16px;padding:28px 24px;box-shadow:0 4px 24px rgba(0,0,0,.05);border:1px solid #f0f0f0}
+.row{display:grid;gap:0 16px}
+.row-2{grid-template-columns:1fr 1fr}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--gray);margin-bottom:6px;letter-spacing:.02em;text-transform:uppercase}
+.field .ar-label{font-size:12px;color:#aaa;font-weight:400;text-transform:none;letter-spacing:0;margin-left:6px}
+.field input,.field textarea{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;color:var(--dark);background:#fff;outline:none;transition:border-color .2s;font-family:inherit}
+.field input:focus,.field textarea:focus{border-color:var(--green)}
+.field textarea{resize:vertical}
+.field input[readonly]{background:#f9fafb;font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.chip{padding:8px 14px;border-radius:20px;border:1.5px solid var(--border);background:#fff;color:var(--gray);font-weight:400;font-size:13px;cursor:pointer;transition:all .2s;user-select:none;line-height:1.4}
+.chip.on{border:2px solid var(--green);background:var(--light-bg);color:var(--green);font-weight:600}
+.chip .ar-text{font-size:11px;color:#aaa;display:block}
+.chip.on .ar-text{color:var(--green)}
+.cost-header{display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:8px;margin-bottom:6px;padding:0 2px}
+.cost-header span{font-size:11px;color:#999;font-weight:600}
+.cost-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:8px;margin-bottom:8px}
+.cost-row input{padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;font-family:inherit}
+.cost-row input:focus{border-color:var(--green)}
+.add-btn{padding:8px 16px;border:1.5px dashed var(--green);border-radius:8px;background:transparent;color:var(--green);cursor:pointer;font-size:13px;font-weight:600}
+.total-bar{background:var(--light-bg);border-radius:10px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+.total-bar .t-label{font-weight:700;color:var(--dark);font-size:15px}
+.total-bar .t-val{font-weight:700;color:var(--green);font-size:20px}
+.info-box{background:var(--light-bg);border-radius:10px;padding:20px;margin-top:8px;border:1px solid rgba(26,122,91,.1)}
+.info-box p{font-size:13px;color:var(--gray);line-height:1.6}
+.info-box strong{color:var(--green)}
+.nav{display:flex;justify-content:space-between;margin-top:20px;gap:12px}
+.btn{padding:12px 28px;border-radius:10px;font-weight:600;font-size:14px;cursor:pointer;transition:all .2s}
+.btn-back{border:1.5px solid var(--border);background:#fff;color:var(--dark)}
+.btn-back:disabled{color:#ccc;cursor:default}
+.btn-next{border:none;background:var(--green);color:#fff;box-shadow:0 4px 12px rgba(26,122,91,.3)}
+.btn-gen{border:none;background:var(--green);color:#fff;box-shadow:0 4px 12px rgba(26,122,91,.3);font-weight:700;letter-spacing:.3px;padding:12px 32px;border-radius:10px;font-size:14px;cursor:pointer}
+.btn-gen.done{background:#10b981}
+.remove-btn{width:32px;height:40px;border:none;background:none;color:#ccc;cursor:pointer;font-size:18px;border-radius:8px;transition:all .2s}
+.remove-btn:hover{color:#ef4444;background:#fef2f2}
+@media(max-width:600px){
+.row-2{grid-template-columns:1fr}
+.cost-row,.cost-header{grid-template-columns:1fr 1fr}
+.wrap{padding:8px 12px 120px}
+.card{padding:20px 16px}
+.header{padding:12px 16px}
+.sec-title .subtitle{margin-left:0;margin-top:8px}
+}
+</style>
+</head>
+<body>
+<div class="header">
+<div><h1>OUJA RESIDENCE</h1><div class="sub">GUEST DAMAGE REPORT FORM</div></div>
+<span class="ar">عوجا لإدارة الأملاك</span>
+</div>
+<div class="lang-bar">
+<button class="lang-btn active" id="langEn" onclick="setLang('en')">English</button>
+<button class="lang-btn" id="langAr" onclick="setLang('ar')">العربية</button>
+</div>
+<div class="wrap">
+<div class="progress" id="progress"></div>
+<div class="sec-title" id="secTitle"></div>
+<div class="card" id="formContent"></div>
+<div class="nav">
+<button class="btn btn-back" id="btnBack" onclick="go(-1)"></button>
+<button class="btn btn-next" id="btnNext" onclick="go(1)"></button>
+</div>
+</div>
+<script>
+let lang="en",cur=0;
+const T={
+sections:{en:["General Information","Guest Information","Damage Details","Cost Estimate","Evidence Collected","Actions Taken","Resolution Tracking","Signatures"],ar:["المعلومات العامة","معلومات الضيف","تفاصيل الأضرار","التكلفة التقديرية","الأدلة المجمعة","الإجراءات المتخذة","متابعة الحل","التوقيعات"]},
+reportDate:{en:"Report Date",ar:"تاريخ التقرير"},
+preparedBy:{en:"Prepared By",ar:"أعدّ بواسطة"},
+propertyName:{en:"Property Name",ar:"اسم الوحدة"},
+unitCode:{en:"Unit Code",ar:"رمز الوحدة"},
+district:{en:"District / Compound",ar:"الحي / المجمع"},
+city:{en:"City",ar:"المدينة"},
+ownerName:{en:"Owner Name",ar:"اسم المالك"},
+guestName:{en:"Guest Name",ar:"اسم الضيف"},
+asShown:{en:"As shown on booking",ar:"كما يظهر في الحجز"},
+checkIn:{en:"Check-in Date",ar:"تاريخ الدخول"},
+checkOut:{en:"Check-out Date",ar:"تاريخ الخروج"},
+platform:{en:"Booking Platform",ar:"منصة الحجز"},
+reservationId:{en:"Reservation ID",ar:"رقم الحجز"},
+confirmCode:{en:"Confirmation code",ar:"رمز التأكيد"},
+dateDiscovered:{en:"Date Discovered",ar:"تاريخ اكتشاف الضرر"},
+discoveredBy:{en:"Discovered By",ar:"اكتُشف بواسطة"},
+staffNamePh:{en:"Staff name",ar:"اسم الموظف"},
+location:{en:"Location in Unit",ar:"الموقع داخل الوحدة"},
+otherLocation:{en:"Other Location",ar:"موقع آخر"},
+specifyOther:{en:"Specify if other",ar:"حدد إذا كان آخر"},
+damageDesc:{en:"Damage Description",ar:"وصف الأضرار"},
+damageDescPh:{en:"Describe the damage in detail (what was damaged, how severe, etc.)",ar:"صف الأضرار بالتفصيل (ماذا تضرر، مدى الضرر، إلخ)"},
+costItems:{en:"Cost Items",ar:"بنود التكلفة"},
+itemH:{en:"ITEM",ar:"البند"},qtyH:{en:"QTY",ar:"الكمية"},unitCostH:{en:"UNIT COST",ar:"سعر الوحدة"},totalH:{en:"TOTAL",ar:"المجموع"},
+itemNamePh:{en:"Item name",ar:"اسم البند"},
+addItem:{en:"+ Add Item",ar:"+ إضافة بند"},
+totalCost:{en:"TOTAL ESTIMATED COST",ar:"إجمالي التكلفة التقديرية"},
+evidenceCheck:{en:"Evidence Checklist",ar:"قائمة الأدلة"},
+evidenceNotes:{en:"Notes on Evidence",ar:"ملاحظات حول الأدلة"},
+evidenceNotesPh:{en:"Additional notes about evidence gathered...",ar:"ملاحظات إضافية حول الأدلة المجمعة..."},
+immediateActions:{en:"Immediate Actions",ar:"الإجراءات الفورية"},
+additionalDetails:{en:"Additional Details",ar:"تفاصيل إضافية"},
+additionalDetailsPh:{en:"Describe any additional actions taken or pending...",ar:"صف أي إجراءات إضافية تم اتخاذها أو معلقة..."},
+airbnbCaseId:{en:"Airbnb Case ID",ar:"رقم القضية في Airbnb"},
+caseNum:{en:"Case #",ar:"رقم القضية"},
+dateFiled:{en:"Date Filed",ar:"تاريخ الرفع"},
+amountRequested:{en:"Amount Requested (SAR)",ar:"المبلغ المطلوب (ريال)"},
+currentStatus:{en:"Current Status",ar:"الحالة الحالية"},
+resolutionNotes:{en:"Resolution Notes",ar:"ملاحظات الحل"},
+resolutionNotesPh:{en:"Updates, follow-up dates, and final resolution details...",ar:"المستجدات، مواعيد المتابعة، وتفاصيل الحل النهائي..."},
+opsStaff:{en:"Operations Staff Name",ar:"اسم موظف العمليات"},
+opsManager:{en:"Operations Manager Name",ar:"اسم مدير العمليات"},
+managerPh:{en:"Manager name",ar:"اسم المدير"},
+assuranceNote:{en:'The generated report will include the <strong>Owner Assurance Statement</strong> in both English and Arabic, confirming that Ouja Residence is handling the situation professionally and that a reimbursement request has been filed with Airbnb.',ar:'التقرير المُنشأ سيتضمن <strong>بيان طمأنة المالك</strong> باللغتين العربية والإنجليزية، يؤكد أن عوجا تتعامل مع الموقف باحترافية وأنه تم رفع طلب تعويض عبر Airbnb.'},
+back:{en:"← Back",ar:"رجوع ←"},next:{en:"Next →",ar:"→ التالي"},generate:{en:"Generate Report ↓",ar:"↓ إنشاء التقرير"},downloaded:{en:"✓ Downloaded!",ar:"✓ تم التحميل!"},
+unitNamePh:{en:"Unit name",ar:"اسم الوحدة"},districtPh:{en:"e.g. Hittin / Al Majdiah",ar:"مثال: حطين / المجدية"},ownerPh:{en:"Property owner full name",ar:"الاسم الكامل لمالك العقار"},amountPh:{en:"e.g. 1500",ar:"مثال: 1500"}
+};
+const locationOpts=[{en:"Living Room",ar:"غرفة المعيشة"},{en:"Bedroom",ar:"غرفة النوم"},{en:"Kitchen",ar:"المطبخ"},{en:"Bathroom",ar:"الحمام"},{en:"Balcony / Outdoor",ar:"البلكونة / الخارج"}];
+const evidenceOpts=[{en:"Photos of damage (before & after)",ar:"صور الأضرار (قبل وبعد)"},{en:"Video documentation",ar:"توثيق فيديو"},{en:"Pre-check-in inspection photos",ar:"صور فحص ما قبل الدخول"},{en:"Guest communication screenshots",ar:"لقطات شاشة محادثات الضيف"},{en:"Receipts / invoices",ar:"إيصالات / فواتير"},{en:"Maintenance / repair quotes",ar:"عروض أسعار الصيانة / الإصلاح"}];
+const actionOpts=[{en:"Damage documented with photos/video",ar:"تم توثيق الأضرار بالصور/الفيديو"},{en:"Airbnb Resolution Center case opened",ar:"تم فتح قضية في مركز حلول Airbnb"},{en:"Reimbursement request filed with Airbnb",ar:"تم رفع طلب تعويض عبر Airbnb"},{en:"Guest contacted regarding the damage",ar:"تم التواصل مع الضيف بخصوص الأضرار"},{en:"Repair / replacement arranged",ar:"تم ترتيب الإصلاح / الاستبدال"},{en:"Unit temporarily blocked for repair",ar:"تم حظر الوحدة مؤقتاً للإصلاح"}];
+const statusOpts=[{en:"Not Opened Yet",ar:"لم يُفتح بعد"},{en:"Pending — Awaiting Airbnb response",ar:"معلّق — بانتظار رد Airbnb"},{en:"In Review — Airbnb reviewing the case",ar:"قيد المراجعة — Airbnb يراجع القضية"},{en:"Approved — Reimbursement confirmed",ar:"تمت الموافقة — تأكيد التعويض"},{en:"Partially Approved",ar:"موافقة جزئية"},{en:"Denied — Escalation in progress",ar:"مرفوض — جاري التصعيد"},{en:"Resolved — Funds received",ar:"تم الحل — تم استلام المبلغ"}];
+const platformOpts=["Airbnb","Booking.com","Direct","Hostaway"];
+
+let form={reportDate:"",preparedBy:"",propertyName:"",unitCode:"",district:"",city:"Riyadh",ownerName:"",guestName:"",checkIn:"",checkOut:"",platform:"",reservationId:"",dateDiscovered:"",discoveredBy:"",locations:[],locationOther:"",damageDescription:"",items:[{name:"",qty:"",unitCost:"",total:""},{name:"",qty:"",unitCost:"",total:""},{name:"",qty:"",unitCost:"",total:""}],evidence:[],evidenceNotes:"",actions:[],actionDetails:"",airbnbCaseId:"",dateFiled:"",amountRequested:"",status:"",resolutionNotes:"",staffName:"",managerName:""};
+
+function g(k){return T[k]?T[k][lang]||T[k].en:k}
+function setLang(l){save();if(cur===3)saveItems();lang=l;document.getElementById("langEn").className="lang-btn"+(l==="en"?" active":"");document.getElementById("langAr").className="lang-btn"+(l==="ar"?" active":"");render()}
+function save(){document.querySelectorAll("[data-key]").forEach(el=>{const k=el.dataset.key;if(k==="locations"||k==="evidence"||k==="actions")return;form[k]=el.value})}
+function biLabel(k){const en=T[k]?T[k].en:k,ar=T[k]?T[k].ar:"";return lang==="en"?en+' <span class="ar-label">'+ar+"</span>":ar+' <span class="ar-label">'+en+"</span>"}
+function field(lk,key,type,ph){const v=form[key]||"";return'<div class="field"><label>'+biLabel(lk)+'</label><input type="'+type+'" data-key="'+key+'" value="'+v+'" placeholder="'+(ph||"")+'"></div>'}
+function tarea(lk,key,phk,rows){const v=form[key]||"",ph=T[phk]?T[phk][lang]:"";return'<div class="field"><label>'+biLabel(lk)+'</label><textarea data-key="'+key+'" rows="'+(rows||4)+'" placeholder="'+ph+'">'+v+"</textarea></div>"}
+function biChips(lk,key,opts,multi){
+const sel=form[key];let h='<div class="field"><label>'+biLabel(lk)+'</label><div class="chips">';
+opts.forEach(o=>{const id=o.en,on=multi?sel.includes(id):sel===id,display=lang==="en"?o.en+'<span class="ar-text">'+o.ar+"</span>":o.ar+'<span class="ar-text">'+o.en+"</span>";
+const fn=multi?"toggleChip":"selectChip";h+='<div class="chip'+(on?" on":"")+'" onclick="'+fn+"('"+key+"','"+id.replace(/'/g,"\\'")+"')\">"+(on?(multi?"✓ ":"● "):"")+display+"</div>"});
+return h+"</div></div>"}
+function platChips(){let h='<div class="field"><label>'+biLabel("platform")+'</label><div class="chips">';platformOpts.forEach(o=>{const on=form.platform===o;h+='<div class="chip'+(on?" on":"")+'" onclick="selectChip(\'platform\',\''+o+"')\">"+(on?"● ":"○ ")+o+"</div>"});return h+"</div></div>"}
+function toggleChip(k,v){save();if(cur===3)saveItems();const i=form[k].indexOf(v);if(i>-1)form[k].splice(i,1);else form[k].push(v);render()}
+function selectChip(k,v){save();if(cur===3)saveItems();form[k]=v;render()}
+function getTotal(){return form.items.reduce((s,i)=>s+(parseFloat(i.total)||0),0)}
+function saveItems(){document.querySelectorAll(".cost-row").forEach((row,i)=>{if(!form.items[i])return;const inp=row.querySelectorAll("input");form.items[i].name=inp[0].value;form.items[i].qty=inp[1].value;form.items[i].unitCost=inp[2].value;const q=parseFloat(inp[1].value)||0,u=parseFloat(inp[2].value)||0;form.items[i].total=q&&u?(q*u).toFixed(2):""})}
+function addItem(){saveItems();save();form.items.push({name:"",qty:"",unitCost:"",total:""});render()}
+function removeItem(i){saveItems();save();if(form.items.length>1){form.items.splice(i,1);render()}}
+function recalc(){saveItems();document.querySelectorAll(".cost-row").forEach((row,i)=>{if(!form.items[i])return;row.querySelectorAll("input")[3].value=form.items[i].total});const te=document.getElementById("totalVal");if(te)te.textContent="SAR "+getTotal().toFixed(2)}
+
+function renderSection(){let h="";switch(cur){
+case 0:
+h+=field("reportDate","reportDate","date","");
+h+=field("preparedBy","preparedBy","text",g("staffNamePh"));
+h+='<div class="row row-2">'+field("propertyName","propertyName","text",g("unitNamePh"))+field("unitCode","unitCode","text","OJR-001")+"</div>";
+h+='<div class="row row-2">'+field("district","district","text",g("districtPh"))+field("city","city","text","")+"</div>";
+h+=field("ownerName","ownerName","text",g("ownerPh"));break;
+case 1:
+h+=field("guestName","guestName","text",g("asShown"));
+h+='<div class="row row-2">'+field("checkIn","checkIn","date","")+field("checkOut","checkOut","date","")+"</div>";
+h+=platChips();h+=field("reservationId","reservationId","text",g("confirmCode"));break;
+case 2:
+h+='<div class="row row-2">'+field("dateDiscovered","dateDiscovered","date","")+field("discoveredBy","discoveredBy","text",g("staffNamePh"))+"</div>";
+h+=biChips("location","locations",locationOpts,true);
+h+=field("otherLocation","locationOther","text",g("specifyOther"));
+h+=tarea("damageDesc","damageDescription","damageDescPh",5);break;
+case 3:
+h+='<div class="field"><label>'+biLabel("costItems")+"</label>";
+h+='<div class="cost-header"><span>'+g("itemH")+"</span><span>"+g("qtyH")+"</span><span>"+g("unitCostH")+"</span><span>"+g("totalH")+'</span><span style="width:32px"></span></div>';
+form.items.forEach((it,i)=>{h+='<div class="cost-row"><input placeholder="'+g("itemNamePh")+'" value="'+it.name+'"><input type="number" placeholder="'+g("qtyH")+'" value="'+it.qty+'" oninput="recalc()"><input type="number" placeholder="SAR" value="'+it.unitCost+'" oninput="recalc()"><input readonly value="'+it.total+'"><button class="remove-btn" onclick="removeItem('+i+')">×</button></div>'});
+h+='<button class="add-btn" onclick="addItem()">'+g("addItem")+"</button></div>";
+h+='<div class="total-bar"><span class="t-label">'+g("totalCost")+'</span><span class="t-val" id="totalVal">SAR '+getTotal().toFixed(2)+"</span></div>";break;
+case 4:h+=biChips("evidenceCheck","evidence",evidenceOpts,true);h+=tarea("evidenceNotes","evidenceNotes","evidenceNotesPh");break;
+case 5:h+=biChips("immediateActions","actions",actionOpts,true);h+=tarea("additionalDetails","actionDetails","additionalDetailsPh");break;
+case 6:
+h+='<div class="row row-2">'+field("airbnbCaseId","airbnbCaseId","text",g("caseNum"))+field("dateFiled","dateFiled","date","")+"</div>";
+h+=field("amountRequested","amountRequested","number",g("amountPh"));
+h+=biChips("currentStatus","status",statusOpts,false);
+h+=tarea("resolutionNotes","resolutionNotes","resolutionNotesPh");break;
+case 7:
+h+='<div class="row row-2">'+field("opsStaff","staffName","text",g("staffNamePh"))+field("opsManager","managerName","text",g("managerPh"))+"</div>";
+h+='<div class="info-box"><p>'+g("assuranceNote")+"</p></div>";break;
+}return h}
+
+function render(){
+const secs=T.sections[lang];let p="";secs.forEach((_,i)=>{p+='<div class="bar'+(i<=cur?" active":"")+'" onclick="save();if(cur===3)saveItems();cur='+i+';render()"></div>'});
+document.getElementById("progress").innerHTML=p;
+const en=T.sections.en[cur],ar=T.sections.ar[cur];
+document.getElementById("secTitle").innerHTML='<span class="badge">'+((cur+1)+"/"+secs.length)+"</span><h2>"+(lang==="en"?en:ar)+'</h2><div class="subtitle">'+(lang==="en"?ar:en)+"</div>";
+document.getElementById("formContent").innerHTML=renderSection();
+const back=document.getElementById("btnBack"),next=document.getElementById("btnNext");
+back.disabled=cur===0;back.style.color=cur===0?"#ccc":"";back.textContent=g("back");
+if(cur<secs.length-1){next.className="btn btn-next";next.textContent=g("next");next.onclick=()=>go(1)}
+else{next.className="btn btn-gen";next.textContent=g("generate");next.onclick=generateReport}}
+
+function go(d){save();if(cur===3)saveItems();cur=Math.max(0,Math.min(T.sections.en.length-1,cur+d));render();window.scrollTo({top:0,behavior:"smooth"})}
+
+function generateReport(){
+save();if(cur===3)saveItems();
+const f=form,total=getTotal(),ck=(a,v)=>a.includes(v)?"✓":"☐";
+const fopt=(opts,v)=>opts.find(o=>o.en===v)||{en:v,ar:v};
+const locs=[...f.locations.map(l=>{const o=fopt(locationOpts,l);return o.en+" / "+o.ar}),f.locationOther?"Other / آخر: "+f.locationOther:""].filter(Boolean).join("  |  ");
+const sts=f.status?(()=>{const o=fopt(statusOpts,f.status);return o.en+" / "+o.ar})():"—";
+
+const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>Ouja Damage Report</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;color:#2C3E50;padding:40px;max-width:850px;margin:auto;font-size:13px}
+.hdr{border-bottom:3px solid #1A7A5B;padding-bottom:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:baseline}
+.hdr h1{color:#1A7A5B;font-size:18px;letter-spacing:1px}
+.hdr span{color:#888;font-size:12px}
+.ttl{text-align:center;margin:20px 0 6px}
+.ttl h2{font-size:22px}
+.ttl .ar{font-size:16px;color:#1A7A5B;margin-top:2px}
+.ttl .sub{font-size:11px;color:#888;margin-top:4px;font-style:italic}
+.sh{background:#1A7A5B;color:#fff;padding:6px 12px;font-size:13px;font-weight:bold;margin-top:18px}
+table{width:100%;border-collapse:collapse;margin-bottom:2px}
+td,th{border:1px solid #d0d0d0;padding:6px 10px;text-align:left;font-size:12px;vertical-align:top}
+.lb{background:#f0f7f4;font-weight:bold;width:170px}
+.lb .a{font-weight:normal;color:#888;font-size:11px;display:block}
+.ch{background:#f5f5f5;font-weight:bold}
+.tr{background:#f0f7f4;font-weight:bold}
+.tv{color:#1A7A5B;font-size:14px;font-weight:bold}
+.as{background:#f0f7f4;border:2px solid #1A7A5B;padding:20px;margin:18px 0;border-radius:4px}
+.as h3{color:#1A7A5B;margin-bottom:8px;font-size:15px}
+.as p{margin-bottom:8px;line-height:1.6;font-size:12px}
+.as .ard{direction:rtl;text-align:right;margin-top:12px;padding-top:12px;border-top:1px solid #d0d0d0}
+.st td{border:1px solid #d0d0d0;padding:16px 20px;width:50%;vertical-align:top}
+.st .sl{font-weight:bold;margin-bottom:30px;display:block}
+.ft{text-align:center;color:#888;font-size:10px;margin-top:30px;border-top:1px solid #d0d0d0;padding-top:8px}
+.ck{margin:2px 0}
+@media print{body{padding:20px}}
+</style></head><body>
+<div class="hdr"><h1>OUJA RESIDENCE</h1><span>عوجا لإدارة الأملاك</span></div>
+<div class="ttl"><h2>GUEST DAMAGE REPORT</h2><div class="ar">تقرير أضرار الضيف</div><div class="sub">Internal Operations Document — For Property Owner Communication</div></div>
+
+<div class="sh">1. GENERAL INFORMATION | المعلومات العامة</div>
+<table>
+<tr><td class="lb">Report Date<span class="a">تاريخ التقرير</span></td><td colspan="3">${f.reportDate||"—"}</td></tr>
+<tr><td class="lb">Prepared By<span class="a">أعدّ بواسطة</span></td><td colspan="3">${f.preparedBy||"—"}</td></tr>
+<tr><td class="lb">Property Name<span class="a">اسم الوحدة</span></td><td>${f.propertyName||"—"}</td><td class="lb">Unit Code<span class="a">رمز الوحدة</span></td><td>${f.unitCode||"—"}</td></tr>
+<tr><td class="lb">District<span class="a">الحي / المجمع</span></td><td>${f.district||"—"}</td><td class="lb">City<span class="a">المدينة</span></td><td>${f.city||"—"}</td></tr>
+<tr><td class="lb">Owner Name<span class="a">اسم المالك</span></td><td colspan="3">${f.ownerName||"—"}</td></tr>
+</table>
+
+<div class="sh">2. GUEST INFORMATION | معلومات الضيف</div>
+<table>
+<tr><td class="lb">Guest Name<span class="a">اسم الضيف</span></td><td colspan="3">${f.guestName||"—"}</td></tr>
+<tr><td class="lb">Check-in<span class="a">الدخول</span></td><td>${f.checkIn||"—"}</td><td class="lb">Check-out<span class="a">الخروج</span></td><td>${f.checkOut||"—"}</td></tr>
+<tr><td class="lb">Platform<span class="a">المنصة</span></td><td>${f.platform||"—"}</td><td class="lb">Reservation ID<span class="a">رقم الحجز</span></td><td>${f.reservationId||"—"}</td></tr>
+</table>
+
+<div class="sh">3. DAMAGE DETAILS | تفاصيل الأضرار</div>
+<table>
+<tr><td class="lb">Date Discovered<span class="a">تاريخ الاكتشاف</span></td><td>${f.dateDiscovered||"—"}</td><td class="lb">Discovered By<span class="a">اكتُشف بواسطة</span></td><td>${f.discoveredBy||"—"}</td></tr>
+<tr><td class="lb">Location<span class="a">الموقع</span></td><td colspan="3">${locs||"—"}</td></tr>
+<tr><td class="lb">Description<span class="a">الوصف</span></td><td colspan="3" style="white-space:pre-wrap">${f.damageDescription||"—"}</td></tr>
+</table>
+
+<div class="sh">4. ESTIMATED COST | التكلفة التقديرية</div>
+<table>
+<tr><td class="ch">Item / البند</td><td class="ch">Qty / الكمية</td><td class="ch">Unit Cost (SAR)</td><td class="ch">Total (SAR)</td></tr>
+${f.items.filter(i=>i.name).map(i=>"<tr><td>"+i.name+"</td><td>"+i.qty+"</td><td>"+i.unitCost+"</td><td>"+i.total+"</td></tr>").join("")}
+<tr class="tr"><td colspan="3" style="text-align:right">TOTAL | الإجمالي</td><td class="tv">SAR ${total.toFixed(2)}</td></tr>
+</table>
+
+<div class="sh">5. EVIDENCE COLLECTED | الأدلة المجمعة</div>
+<table>
+<tr><td class="lb">Checklist<span class="a">القائمة</span></td><td colspan="3">${evidenceOpts.map(e=>'<div class="ck">'+ck(f.evidence,e.en)+" "+e.en+" / "+e.ar+"</div>").join("")}</td></tr>
+<tr><td class="lb">Notes<span class="a">ملاحظات</span></td><td colspan="3" style="white-space:pre-wrap">${f.evidenceNotes||"—"}</td></tr>
+</table>
+
+<div class="sh">6. ACTIONS TAKEN | الإجراءات المتخذة</div>
+<table>
+<tr><td class="lb">Actions<span class="a">الإجراءات</span></td><td colspan="3">${actionOpts.map(a=>'<div class="ck">'+ck(f.actions,a.en)+" "+a.en+" / "+a.ar+"</div>").join("")}</td></tr>
+<tr><td class="lb">Details<span class="a">تفاصيل</span></td><td colspan="3" style="white-space:pre-wrap">${f.actionDetails||"—"}</td></tr>
+</table>
+
+<div class="as">
+<h3>OWNER ASSURANCE STATEMENT | بيان طمأنة المالك</h3>
+<p>Dear Property Owner,</p>
+<p>We want to assure you that Ouja Residence is handling this matter with the highest level of care and professionalism. The damage has been thoroughly documented, and our operations team has already taken the necessary steps to address the situation.</p>
+<p>A reimbursement request has been filed through Airbnb's Resolution Center, and we are actively following up to ensure a fair resolution. We will keep you updated at every step of this process until the matter is fully resolved.</p>
+<p>Your property is in safe hands, and we are committed to restoring it to its original condition as quickly as possible.</p>
+<div class="ard">
+<p>عزيزنا مالك العقار،</p>
+<p>نؤكد لكم أن فريق عوجا لإدارة الأملاك يتعامل مع هذا الموضوع بأعلى مستوى من العناية والاحترافية. تم توثيق الأضرار بشكل كامل، وقد اتخذ فريق العمليات لدينا الإجراءات اللازمة لمعالجة الوضع.</p>
+<p>تم رفع طلب تعويض عبر مركز حلول Airbnb، ونحن نتابع بشكل فعّال لضمان حل عادل. سنبقيكم على اطلاع بكل خطوة في هذه العملية حتى يتم حل الأمر بالكامل.</p>
+<p>عقاركم في أيدٍ أمينة، ونحن ملتزمون بإعادته إلى حالته الأصلية في أسرع وقت ممكن.</p>
+</div>
+</div>
+
+<div class="sh">7. RESOLUTION TRACKING | متابعة الحل</div>
+<table>
+<tr><td class="lb">Airbnb Case ID<span class="a">رقم القضية</span></td><td>${f.airbnbCaseId||"—"}</td><td class="lb">Date Filed<span class="a">تاريخ الرفع</span></td><td>${f.dateFiled||"—"}</td></tr>
+<tr><td class="lb">Amount (SAR)<span class="a">المبلغ</span></td><td colspan="3">SAR ${f.amountRequested||"—"}</td></tr>
+<tr><td class="lb">Status<span class="a">الحالة</span></td><td colspan="3">${sts}</td></tr>
+<tr><td class="lb">Notes<span class="a">ملاحظات</span></td><td colspan="3" style="white-space:pre-wrap">${f.resolutionNotes||"—"}</td></tr>
+</table>
+
+<div class="sh">8. SIGNATURES | التوقيعات</div>
+<table class="st">
+<tr>
+<td><span class="sl">Operations Staff / موظف العمليات</span><br>Name / الاسم: ${f.staffName||"________________"}<br><br>Date / التاريخ: ____/____/________<br><br>Signature / التوقيع: ________________</td>
+<td><span class="sl">Operations Manager / مدير العمليات</span><br>Name / الاسم: ${f.managerName||"________________"}<br><br>Date / التاريخ: ____/____/________<br><br>Signature / التوقيع: ________________</td>
+</tr>
+</table>
+
+<div class="ft">Confidential — Ouja Residence Property Management | سري — عوجا لإدارة الأملاك</div>
+</body></html>`;
+
+const blob=new Blob([html],{type:"text/html"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;
+a.download="Ouja_Damage_Report_"+(f.propertyName||"DRAFT")+"_"+(f.reportDate||"undated")+".html";
+document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+const btn=document.getElementById("btnNext");btn.textContent=g("downloaded");btn.className="btn btn-gen done";setTimeout(()=>{btn.textContent=g("generate");btn.className="btn btn-gen"},3000)}
+
+render();
+</script>
+</body>
+</html>
